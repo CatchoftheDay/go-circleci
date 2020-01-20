@@ -541,6 +541,15 @@ func (c *Client) AddSSHKey(account, repo, hostname, privateKey string) error {
 	return c.request("POST", fmt.Sprintf("project/%s/%s/ssh-key", account, repo), nil, nil, key)
 }
 
+// DeleteSSHKey deletes a SSH key of the project
+func (c *Client) DeleteSSHKey(account, repo, fingerprint, hostname string) error {
+	key := &struct {
+		Fingerprint   string `json:"fingerprint"`
+		Hostname	  string `json:"hostname"`
+	}{fingerprint, hostname}
+	return c.request("DELETE", fmt.Sprintf("project/%s/%s/ssh-key", account, repo), nil, nil, key)
+}
+
 // GetActionOutputs fetches the output for the given action
 // If the action has no output, returns nil
 func (c *Client) GetActionOutputs(a *Action) ([]*Output, error) {
